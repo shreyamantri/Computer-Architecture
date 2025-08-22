@@ -1,22 +1,21 @@
-.globl abs_loss
+.globl zero_one_loss
 
 .text
 # =======================================================
-# FUNCTION: Get the absolute difference of 2 int arrays,
-#   store in a third array and compute the sum
+# FUNCTION: Return a 0-1 classifer array
 # Arguments:
 #   a0 (int*) is the pointer to the start of arr0
 #   a1 (int*) is the pointer to the start of arr1
 #   a2 (int)  is the length of the arrays
-#   a3 (int*) is the pointer to the start of the loss array
+#   a3 (int*) is the pointer to the start of the result (loss) array
 
 # Returns:
-#   a0 (int)  is the sum of the absolute loss
+#   NONE
 # Exceptions:
 # - If the length of the array is less than 1,
 #   this function terminates the program with error code 36.
 # =======================================================
-abs_loss:
+zero_one_loss:
     # Checking to see if the stride and length is greater than 0.
     li t0 1
     blt a2 t0 exit_bad_len
@@ -37,24 +36,20 @@ loop_start:
     lw t5 0(t3)
     lw t6 0(t4)
 
-    bge t6 t5 sub2
+    # Get address of "i"th element of the result array
+    add t3 t2 a3
 
-sub1:
-    sub t2 t5 t6
+    beq t5 t6 load1
+
+load0:
+    sw x0 0(t3)
     j loop_cont
 
-sub2:
-    sub t2 t6 t5
-
-loop_cont:
-    # Adding the loss to the running total
-    add t1 t1 t2
-
-    # Storing the absolute difference into a3
-    slli t3 t0 2 # t2 = index * sizeof(int)
-    add t3 t3 a3
+load1:
+    li t2 1
     sw t2 0(t3)
 
+loop_cont:
     # Increment loop index and array pointers
     addi t0 t0 1
     j loop_start

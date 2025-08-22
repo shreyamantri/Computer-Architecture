@@ -1,8 +1,8 @@
-.globl abs_loss
+.globl squared_loss
 
 .text
 # =======================================================
-# FUNCTION: Get the absolute difference of 2 int arrays,
+# FUNCTION: Get the squared difference of 2 int arrays,
 #   store in a third array and compute the sum
 # Arguments:
 #   a0 (int*) is the pointer to the start of arr0
@@ -11,12 +11,12 @@
 #   a3 (int*) is the pointer to the start of the loss array
 
 # Returns:
-#   a0 (int)  is the sum of the absolute loss
+#   a0 (int)  is the sum of the squared loss
 # Exceptions:
 # - If the length of the array is less than 1,
 #   this function terminates the program with error code 36.
 # =======================================================
-abs_loss:
+squared_loss:
     # Checking to see if the stride and length is greater than 0.
     li t0 1
     blt a2 t0 exit_bad_len
@@ -37,20 +37,12 @@ loop_start:
     lw t5 0(t3)
     lw t6 0(t4)
 
-    bge t6 t5 sub2
-
-sub1:
+    # Getting the difference of the elements and squaring
     sub t2 t5 t6
-    j loop_cont
-
-sub2:
-    sub t2 t6 t5
-
-loop_cont:
-    # Adding the loss to the running total
+    mul t2 t2 t2
     add t1 t1 t2
 
-    # Storing the absolute difference into a3
+    # Storing the squared difference into a3
     slli t3 t0 2 # t2 = index * sizeof(int)
     add t3 t3 a3
     sw t2 0(t3)
