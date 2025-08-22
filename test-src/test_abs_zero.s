@@ -3,10 +3,10 @@
 
 .data
 .align 4
-m0: .word -1
+m0: .word 0
 .align 4
-m1: .word 1
-msg0: .asciiz "Expected m0 to be:\n1\nInstead it is:\n"
+m1: .word 0
+msg0: .asciiz "Expected m0 to be:\n0\nInstead it is:\n"
 
 .globl main_test
 .text
@@ -20,7 +20,7 @@ main_test:
     jal ra abs
 
     ##################################
-    # check that m0 == [1]
+    # check that m0 == [0]
     ##################################
     # a0: exit code
     li a0, 2

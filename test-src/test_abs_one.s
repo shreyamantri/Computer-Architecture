@@ -3,7 +3,7 @@
 
 .data
 .align 4
-m0: .word -1
+m0: .word 1
 .align 4
 m1: .word 1
 msg0: .asciiz "Expected m0 to be:\n1\nInstead it is:\n"
