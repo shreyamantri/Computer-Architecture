@@ -1,5 +1,3 @@
-# CS61CPU
+# CPU
 
-Look ma, I made a CPU! Here's what I did:
-
--
+Built a CPU that runs RISC-V instructions
